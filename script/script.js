@@ -7,7 +7,7 @@ const nextGeneratedDate = document.getElementById("next-generated-date");
 const loadingDiv = document.getElementById("splash-screen");
 
 (async function () {
-  const response = await fetch("http://localhost:5000/bagi-kursi/us-central1/getCurrent");
+  const response = await fetch("https://us-central1-bagi-kursi.cloudfunctions.net/getCurrent");
   const result = await response.json();
 
   loadingDiv.style.opacity = 0;
