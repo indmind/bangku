@@ -6,9 +6,13 @@ const generatedDate = document.getElementById("generated-date");
 const nextGeneratedDate = document.getElementById("next-generated-date");
 const loadingDiv = document.getElementById("splash-screen");
 
+let urutanBangku = [];
+
 (async function () {
   const response = await fetch("https://us-central1-bagi-kursi.cloudfunctions.net/getCurrent");
   const result = await response.json();
+
+  urutanBangku = result.data;
 
   loadingDiv.style.opacity = 0;
 
@@ -19,11 +23,9 @@ const loadingDiv = document.getElementById("splash-screen");
   generatedDate.innerHTML = `Generated at: ${parseDate(result.timestamp._seconds * 1000)}`;
   nextGeneratedDate.innerHTML = `Next Generate: ${parseDate(result.nextGenerated)}`;
 
-  btCopy.addEventListener("click", () => {
-    copyHasil(result.data)
-  })
+  btCopy.addEventListener("click", copyHasil)
 
-  render(result.data);
+  render(urutanBangku);
 }())
 
 function parseDate(timestamp) {
@@ -101,13 +103,13 @@ function copyToClipboard(str) {
   }
 }
 
-function copyHasil(data) {
-  if (!data.length) return
+function copyHasil() {
+  if (!urutanBangku.length) return
 
   let hasil = '';
   let index = 1;
 
-  for (let kelompok of data) {
+  for (let kelompok of urutanBangku) {
     hasil += `*Meja ${index++}:*\n`;
 
     for (let murid of kelompok) {
