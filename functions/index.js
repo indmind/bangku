@@ -11,7 +11,7 @@ admin.initializeApp(firebaseConfig);
 
 const ref = admin.firestore().collection("kursi");
 
-const randomizeEachDay = 7;
+const randomizeEachDay = -7;
 
 exports.getCurrent = functions.https.onRequest((request, response) => {
     cors(request, response, async () => {
@@ -31,7 +31,7 @@ exports.getCurrent = functions.https.onRequest((request, response) => {
                 console.log("Inserting new data: " + formatDate(currentDate))
                 await ref.doc(formatDate(currentDate)).set({
                     data: JSON.stringify(newData),
-                    timestamp: result.timestamp
+                    timestamp: admin.firestore.FieldValue.serverTimestamp()
                 })
 
                 result = await getLastData();
@@ -94,6 +94,8 @@ function formatDate(date) {
 }
 
 async function bagiRata(murid, jumlah) {
+    const segmentationFix = true;
+
     const randomizeChunk = c => {
         for (let i = 0; i < random(1, 3); i++) {
             c = shuffle(c)
@@ -106,7 +108,7 @@ async function bagiRata(murid, jumlah) {
 
     let candiDate = [34, 8];
 
-    if (jumlah === 18) {
+    if (jumlah === 18 && segmentationFix) {
         laki = randomizeChunk(murid.filter(m => m.kelamin === 'l' && ![33, 23].includes(m.no)));
         perempuan = randomizeChunk(murid.filter(m => m.kelamin === 'p' && !candiDate.includes(m.no)));
 
