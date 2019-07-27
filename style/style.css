@@ -1,0 +1,194 @@
+@import url('https://fonts.googleapis.com/css?family=Itim');
+.row, .col, .card {
+    box-sizing: border-box;
+}
+
+body {
+    text-align: center;
+    background-color: #34495e;
+    color: #ecf0f1;
+    font-family: 'Itim', cursive;
+    user-select: none;
+}
+
+#splash-screen {
+    position: absolute;
+    z-index: 1000;
+    background-color: #34495e;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    transition: 300ms linear;
+}
+
+#notice {
+    font-size: 20px;
+    font-style: italic;
+    color: #ffffff69;
+}
+
+.loader {
+    border: 10px solid #1a1a1a69;
+    border-radius: 50%;
+    border-top: 10px solid #27ae60;
+    width: 60px;
+    height: 60px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+
+    max-width: 100%;
+    max-height: 100%;
+    overflow: auto;
+
+    -webkit-animation: spin 1s linear infinite;
+    animation: spin 1s linear infinite;
+}
+
+@-webkit-keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+h1 {
+    margin-top: 20px;
+    font-size: 3.5em;
+}
+
+@media screen and (max-width: 600px) {
+    h1 {
+        font-size: 3em;
+    }
+}
+
+@media screen and (max-width: 315px) {
+    h1 {
+        font-size: 2.5em;
+    }
+}
+
+input, button, .card {
+    box-shadow: 0 10px 38px rgba(0, 0, 0, 0.30), 0 6px 12px rgba(0, 0, 0, 0.22);
+}
+
+input[type="number"] {
+    margin: 10px;
+    padding: 5px;
+    border-radius: 10px;
+    height: 20px;
+    width: 10em;
+    height: 2.5em;
+    text-align: center;
+    color: #2c3e50;
+    font-size: 1em;
+    font-weight: 900;
+    border: 1px solid #2c3e50;
+}
+
+button {
+    margin: 10px;
+    padding: 8px;
+    border-radius: 10px;
+    background-color: #2ecc71;
+    border: solid 2px #27ae60;
+    color: inherit;
+    font-weight: bold;
+    width: 8em;
+    transition: 100ms
+}
+
+button:hover {
+    box-shadow: 0 10px 45px rgba(0, 0, 0, 0.30), 0 6px 15px rgba(0, 0, 0, 0.22);
+    transform: scale(1.07);
+}
+
+button:active {
+    box-shadow: 0 0 38px rgba(0, 0, 0, 0.30), 0 0 12px rgba(0, 0, 0, 0.22);
+    transform: translateY(4px);
+}
+
+ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.colom {
+    margin-top: 20px;
+}
+
+.kel {
+    margin-bottom: 100px;
+    padding: 10px;
+    background-color: #34495e;
+    border-radius: 5px 5px 0 0;
+    border-left: solid #2980b9;
+    border-top: solid #2980b9;
+    border-right: solid #2980b9;
+    ;
+    font-weight: 1000;
+    padding-bottom: .23em;
+}
+
+.container {
+    padding: 10px 30px;
+}
+
+.row {
+    justify-content: center;
+}
+
+.card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    text-align: center;
+    border: solid #2980b9;
+    border-radius: 10px;
+    transition: 100ms;
+    background-color: inherit;
+    padding: 10px 10px 0px;
+}
+
+li {
+    padding: 5px;
+    margin: 0 10px;
+}
+
+li:nth-child(odd) {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}
+
+footer {
+    margin: 10px 0 3px;
+}
+
+button:disabled {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-color: rgba(228, 103, 103, 0.2);
+    color: hsla(192, 15%, 94%, 0.2);
+    box-shadow: 0 0 38px rgba(0, 0, 0, 0.30), 0 0 12px rgba(0, 0, 0, 0.2);
+    transform: scale(1) translateY(4px);
+}
+
+button:disabled:hover {
+    box-shadow: 0 0 38px rgba(0, 0, 0, 0.30), 0 0 12px rgba(0, 0, 0, 0.2);
+    transform: scale(1) translateY(4px);
+}

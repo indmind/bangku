@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Bagi Kelompok</title>
+
+  <link rel='shortcut icon' type='image/x-icon' href='./favicon.ico' />
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="style/style.css">
+  <link rel="stylesheet" href="style/loading.css">
+  <link rel="stylesheet" href="style/checkbox.css">
+  <link rel="stylesheet" href="style/snackbar.css">
+</head>
+
+<body>
+  <div id="splash-screen">
+    <div class="loader"></div>
+  </div>
+
+  <h1>Pembagian Tempat Duduk XI RPL A</h1>
+
+  <p>
+    <span id="generated-date"></span><br />
+    <span id="next-generated-date"></span><br/>
+    <span id="notice">Tempat duduk tidak berdasarkan layout dibawah, melainkan mengular sesuai no urutan.</span>
+  </p>
+
+  <button onclick="copyHasil()" id="btCopy">Copy</button>
+
+  <div class="container">
+    <div class="row" id="container">
+      <!-- Semua akan ditampilkan disini -->
+      <h4 style="color:rgba(255, 255, 255, 0.7)">*Semua hasil dari program ini adalah murni hasil dari pengacakan
+        komputer. Apabila terdapat hasil yang tidak menyenangkan, harap bersabar dan menerimanya dengan ikhlas ･ᴗ･</h4>
+    </div>
+  </div>
+
+  <div id="snackbar">Hasil Telah Dicopy!</div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-firestore.js"></script>
+  <script src="script/script.js"></script>
+
+  <footer>
+    Copyright &copy; 2019 XI RPL A SMK Negeri 8 Malang - Made With <s>Tears</s> &hearts; by <a
+      href="//github.com/indmind">dvync</a>
+  </footer>
+</body>
+
+</html>
