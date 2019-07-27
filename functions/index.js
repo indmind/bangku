@@ -28,6 +28,7 @@ exports.getCurrent = functions.https.onRequest((request, response) => {
             const newData = await bagiBedaDengan(result.data);
 
             try {
+                console.log("Inserting new data: " + formatDate(currentDate))
                 await ref.doc(formatDate(currentDate)).set({
                     data: JSON.stringify(newData),
                     timestamp: result.timestamp
