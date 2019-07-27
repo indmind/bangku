@@ -54,7 +54,7 @@ exports.getCurrent = functions.https.onRequest((request, response) => {
 });
 
 async function getLastData() {
-    const snapshot = await ref.orderBy("timestamp").limit(1).get();
+    const snapshot = await ref.orderBy("timestamp", "desc").limit(1).get();
         
     return snapshot.docs[0].data();
 }

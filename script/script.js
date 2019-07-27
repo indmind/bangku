@@ -11,7 +11,7 @@ const loadingDiv = document.getElementById("splash-screen");
   const result = await response.json();
 
   loadingDiv.style.opacity = 0;
-  
+
   setTimeout(() => {
     loadingDiv.remove()
   }, 500)
@@ -108,7 +108,7 @@ function copyHasil(data) {
   let index = 1;
 
   for (let kelompok of data) {
-    hasil += `*Kelompok ${index++}:*\n`;
+    hasil += `*Meja ${index++}:*\n`;
 
     for (let murid of kelompok) {
       hasil += `- ${murid.nama} (${murid.no})\n`;
