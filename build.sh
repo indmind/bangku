@@ -17,6 +17,4 @@ node_modules/.bin/uglifycss csstemp/snackbar.css > dist/style/snackbar.css
 
 rm -rf csstemp
 
-cp script/murid.json dist/script/murid.json
-
 echo "done..."

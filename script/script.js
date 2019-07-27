@@ -11,6 +11,10 @@ const loadingDiv = document.getElementById("splash-screen");
   const result = await response.json();
 
   loadingDiv.style.opacity = 0;
+  
+  setTimeout(() => {
+    loadingDiv.remove()
+  }, 500)
 
   generatedDate.innerHTML = `Generated at: ${parseDate(result.timestamp._seconds * 1000)}`;
   nextGeneratedDate.innerHTML = `Next Generate: ${parseDate(result.nextGenerated)}`;
