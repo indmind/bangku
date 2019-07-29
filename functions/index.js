@@ -11,52 +11,73 @@ admin.initializeApp(firebaseConfig);
 
 const ref = admin.firestore().collection("kursi");
 
-const randomizeEachDay = -7;
+const dayDelay = 7;
 
 exports.getCurrent = functions.https.onRequest((request, response) => {
     cors(request, response, async () => {
         const currentDate = new Date();
 
+        const currentTime = currentDate.getTime();
+        const updateTime = currentDate.setDate(currentDate.getDate() + dayDelay);
+
+        // reset current date
+        currentDate.setDate(currentDate.getDate() - dayDelay);
+
         let result = await getLastData();
 
-        result.data = JSON.parse(result.data);
+        if (result === null) {
+            const newData = await bagiBedaDengan([]);
 
-        let nextGenerateDate = result.timestamp.toDate()
-        nextGenerateDate.setDate(result.timestamp.toDate().getDate() + randomizeEachDay);
+            await ref.doc(formatDate(currentDate)).set({
+                data: JSON.stringify(newData),
+                timestamp: currentTime, // generated time
+                scheduledGenerateTime: currentTime, // generated time based on last data
+                nextUpdateScheduleTime: updateTime// update time
+            })
 
-        if (currentDate >= convertUTCDateToLocalDate(nextGenerateDate)) {
-            const newData = await bagiBedaDengan(result.data);
+            result = await getLastData();
+        }
+
+        let nextUpdateSchedule = result.nextUpdateScheduleTime;
+
+        if (currentTime >= nextUpdateSchedule) {
+            const newData = await bagiBedaDengan(JSON.parse(result.data));
 
             try {
                 console.log("Inserting new data: " + formatDate(currentDate))
+
+                const nextUpdateDate = new Date(nextUpdateSchedule);
+
+                nextUpdateDate.setDate(nextUpdateDate.getDate() + dayDelay);
+
                 await ref.doc(formatDate(currentDate)).set({
                     data: JSON.stringify(newData),
-                    timestamp: admin.firestore.FieldValue.serverTimestamp()
+                    timestamp: currentTime, // generated time
+                    scheduledGenerateTime: nextUpdateSchedule, // generated time based on last data
+                    nextUpdateScheduleTime: nextUpdateDate.getTime()// update time
                 })
 
                 result = await getLastData();
 
-                result.data = JSON.parse(result.data)
-
-                let nextGenerateDate = result.timestamp.toDate()
-                nextGenerateDate.setDate(result.timestamp.toDate().getDate() + randomizeEachDay);
             } catch (err) {
                 response.end(err.message)
             }
         }
 
-        result.nextGenerated = nextGenerateDate;
+        result.data = JSON.parse(result.data)
 
         response.json(result);
     })
-
-    
 });
 
 async function getLastData() {
     const snapshot = await ref.orderBy("timestamp", "desc").limit(1).get();
-        
-    return snapshot.docs[0].data();
+
+    if (snapshot.docs.length) {
+        return snapshot.docs[0].data();
+    }
+
+    return null;
 }
 
 async function bagiBedaDengan(data) {
@@ -78,23 +99,12 @@ async function bagiBedaDengan(data) {
     return hasil;
 }
 
-function convertUTCDateToLocalDate(date) {
-    var newDate = new Date(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
-  
-    var offset = date.getTimezoneOffset() / 60;
-    var hours = date.getHours();
-  
-    newDate.setHours(hours - offset);
-  
-    return newDate;
-  }
-
 function formatDate(date) {
     return date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear()
 }
 
 async function bagiRata(murid, jumlah) {
-    const segmentationFix = true;
+    const segmentationFix = false;
 
     const randomizeChunk = c => {
         for (let i = 0; i < random(1, 3); i++) {

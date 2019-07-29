@@ -20,8 +20,8 @@ let urutanBangku = [];
     loadingDiv.remove()
   }, 500)
 
-  generatedDate.innerHTML = `Generated at: ${parseDate(result.timestamp._seconds * 1000)}`;
-  nextGeneratedDate.innerHTML = `Next Generate: ${parseDate(result.nextGenerated)}`;
+  generatedDate.innerHTML = `Diacak pada: ${parseDate(result.scheduledGenerateTime)}`;
+  nextGeneratedDate.innerHTML = `Diacak lagi pada: ${parseDate(result.nextUpdateScheduleTime)}`;
 
   btCopy.addEventListener("click", copyHasil)
 
@@ -29,18 +29,19 @@ let urutanBangku = [];
 }())
 
 function parseDate(timestamp) {
-  return convertUTCDateToLocalDate(new Date(timestamp)).toUTCString()
-}
+  const date = new Date(timestamp);
 
-function convertUTCDateToLocalDate(date) {
-  var newDate = new Date(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
+  const options = {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    timeZoneName: 'short'
+  };
 
-  var offset = date.getTimezoneOffset() / 60;
-  var hours = date.getHours();
-
-  newDate.setHours(hours - offset);
-
-  return newDate;
+  return date.toLocaleDateString("id-ID", options)
 }
 
 function render(data) {

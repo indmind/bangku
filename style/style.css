@@ -30,6 +30,12 @@ body {
     color: #ffffff69;
 }
 
+#notice-warning {
+    font-size: 22px;
+    font-weight: bold;
+    color: #ff7675;
+}
+
 .loader {
     border: 10px solid #1a1a1a69;
     border-radius: 50%;
