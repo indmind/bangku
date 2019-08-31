@@ -7,9 +7,11 @@ const firebaseConfig = {
     databaseURL: "https://bagi-kursi.firebaseio.com"
 };
 
+const isDebug = false;
+
 admin.initializeApp(firebaseConfig);
 
-const ref = admin.firestore().collection("kursi");
+const ref = admin.firestore().collection(isDebug ? "kursi-devt" : "kursi");
 
 const dayDelay = 7;
 
@@ -25,7 +27,7 @@ exports.getCurrent = functions.https.onRequest((request, response) => {
 
         let result = await getLastData();
 
-        if (result === null) {
+        if (isDebug || result === null) {
             const newData = await bagiBedaDengan([]);
 
             await ref.doc(formatDate(currentDate)).set({
@@ -40,7 +42,7 @@ exports.getCurrent = functions.https.onRequest((request, response) => {
 
         let nextUpdateSchedule = result.nextUpdateScheduleTime;
 
-        if (currentTime >= nextUpdateSchedule) {
+        if (currentTime >= nextUpdateSchedule && !isDebug) {
             const newData = await bagiBedaDengan(JSON.parse(result.data));
 
             try {
@@ -104,7 +106,7 @@ function formatDate(date) {
 }
 
 async function bagiRata(murid, jumlah) {
-    const segmentationFix = false;
+    const segmentationFix = true;
 
     const randomizeChunk = c => {
         for (let i = 0; i < random(1, 3); i++) {
@@ -116,13 +118,22 @@ async function bagiRata(murid, jumlah) {
 
     let laki, perempuan, chunkOverMemory;
 
-    let candiDate = [34, 8];
+    const fixedMedian = [];
+
+    let students = murid;
 
     if (jumlah === 18 && segmentationFix) {
-        laki = randomizeChunk(murid.filter(m => m.kelamin === 'l' && ![33, 23].includes(m.no)));
-        perempuan = randomizeChunk(murid.filter(m => m.kelamin === 'p' && !candiDate.includes(m.no)));
+        for(let datesMean of fixedMedian) {
+            students = students.filter(m => 
+                !(m.no === datesMean[0] || m.no === datesMean[1])
+            );
 
-        jumlah -= candiDate.length;
+            jumlah--;
+        }
+        
+        laki = randomizeChunk(students.filter(m => m.kelamin === 'l'));
+        perempuan = randomizeChunk(students.filter(m => m.kelamin === 'p'));
+
         chunkOverMemory = true;
     } else {
         laki = randomizeChunk(murid.filter(m => m.kelamin === 'l'));
@@ -157,8 +168,12 @@ async function bagiRata(murid, jumlah) {
     const result = shuffle(kelompok);
 
     if (chunkOverMemory) {
-        result.splice(3, 0, [murid.find(m => m.no === 23), murid.find(m => m.no === candiDate[0])]);
-        result.splice(4, 0, [murid.find(m => m.no === 33), murid.find(m => m.no === candiDate[1])]);
+        for(let datesMean of fixedMedian) {
+            result.splice(datesMean[2], 0, [
+                murid.find(m => m.no === datesMean[0]),
+                murid.find(m => m.no === datesMean[1]),
+            ])
+        }
     }
 
     return result;
